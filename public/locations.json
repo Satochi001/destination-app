@@ -1,0 +1,251 @@
+[
+    {
+        "name": " Kimono,Temple Japan",
+        "imgurl": "https://t3.ftcdn.net/jpg/03/88/91/40/240_F_388914017_X0C5rjW63VY7HbIrssFkGrjMxavVSAwq.jpg",
+        "flighttype": "Long Flight",
+        "climate": "temperate",
+        "tag": "spirituality",
+        "visited": true
+    },
+    
+    {
+        "name": "Namibia",
+        "imgurl": "https://t4.ftcdn.net/jpg/04/43/41/61/240_F_443416158_XhWfJAeRuqeRV2I3r16O2IQT3KxuslnY.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "sunny",
+        "tag": "adventures",
+        "visited": true
+
+    },
+    
+    {
+        "name": "Bali Temple, Indonesia",
+        "imgurl": "https://t4.ftcdn.net/jpg/03/28/99/77/240_F_328997736_J14m0YbtcUTFsO2bokzdQvggmJDrmYEw.jpg",
+        "flighttype": "Long Flight",
+        "climate": "sunny",
+        "tag": "spirituality",
+        "visited": false
+
+    },
+    {
+        "name": "Arches National Park, Utah",
+        "imgurl": "https://t3.ftcdn.net/jpg/05/69/35/08/240_F_569350859_HxnN5NLuLZYbX6T5PqDIaFqVSE83GWyA.jpg",
+        "flighttype":"Medium Flight",
+        "climate": "sunny",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Maldives",
+        "imgurl": "https://t4.ftcdn.net/jpg/02/74/31/83/240_F_274318370_wBHOPOO8AYRapUFkxgkioO2xtCsZvkXi.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "sunny",
+        "tag": "tropical",
+        "visited": false
+
+    },
+    {
+        "name": "Hiking in Ontario",
+        "imgurl": "https://t4.ftcdn.net/jpg/00/88/97/95/240_F_88979533_KLq91oMorTZPO3WOBzOA6DbTDltA5qLG.jpg",
+        "flighttype": "Long Flight",
+        "climate": "winter",
+        "tag": "adventures",
+        "visited": true
+
+    },
+    {
+        "name": " China",
+        "imgurl": "https://t3.ftcdn.net/jpg/03/81/32/28/240_F_381322831_tSFfxokIW323hH6v65GDSNVrnyaCQxRA.jpg",
+        "flighttype": "Long Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Bali Pagoda, Indonesia",
+        "imgurl": "https://t3.ftcdn.net/jpg/03/96/68/02/240_F_396680275_ZHOb3xWhVePkhF3i2Lzmtcgrvn1Psk9H.jpg",
+        "flighttype": "Long Flight",
+        "climate": "temperate",
+        "tag": "adventures",
+        "visited": false
+
+    },
+    {
+        "name": "Ibiza, Spain",
+        "imgurl": "https://t3.ftcdn.net/jpg/07/80/94/90/240_F_780949069_Nag7BOJXLDdBhKIfP4BmScUVc4YuU1uk.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited":  true
+    },
+    {
+        "name": "Brazil",
+        "imgurl": "https://t4.ftcdn.net/jpg/02/67/36/83/240_F_267368352_TzkJF3gbC0eJreiIUkRoqdFUf6Hgn6R7.jpg",
+        "flighttype": "Long Flight",
+        "climate": "sunny",
+        "tag": "tropical",
+        "visited": false
+
+    },
+    {
+        "name": "Maui, Hawaii, USA",
+        "imgurl": "https://t4.ftcdn.net/jpg/05/02/59/49/240_F_502594944_nAKgbe0VcjptOCV4NetuB3mQQhUugDy4.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "sunny",
+        "tag": "beach",
+        "visited": true
+    },
+    {
+        "name": "Santorini, Greece",
+        "imgurl": "https://t3.ftcdn.net/jpg/01/02/66/52/240_F_102665267_IgrQLv7nJjmtONkG2tArYmFGRcicsDi1.jpg",
+        "flighttype": "Short Flight",
+        "climate": "winter",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "New York City, USA",
+        "imgurl": "https://t3.ftcdn.net/jpg/05/40/58/70/240_F_540587011_DNcBGQXueWxv3q7PnnlJ6tpAYJg8g7j6.jpg",
+        "flighttype": "Short Flight",
+        "climate": "winter",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Capetown, South Africa",
+        "imgurl": "https://t3.ftcdn.net/jpg/00/69/44/04/240_F_69440448_vSGuVaPtSFOFVOwwQ9amjyHZFLAUJtM4.jpg",
+        "flighttype": "Short Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Arkadi Monastery,Greece",
+        "imgurl": "https://t4.ftcdn.net/jpg/03/43/19/41/240_F_343194169_ZWZuAwfVsnCq6azoBiRjgn6X0OtT9DGZ.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag": "spirituality",
+        "visited": false
+
+    },
+    {
+        "name": "Venice,Italy",
+        "imgurl": "https://t4.ftcdn.net/jpg/00/37/09/75/240_F_37097506_d51HMPaADr1u8Trs2Rk8UzXC5DOr9dNc.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "sunny",
+        "tag": "adventures",
+        "visited": false
+
+    },
+    {
+        "name": "Paris, France",
+        "imgurl": "https://t4.ftcdn.net/jpg/00/65/11/79/240_F_65117955_47wvGoxrEBcNUtZdzJVpdV78izYZYKiS.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "St Sernin, Toulouse",
+        "imgurl": "https://t4.ftcdn.net/jpg/02/78/83/67/240_F_278836788_SsP1v9A7S4djra3G2dHSFRfXLTjSfrKy.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag": "spirituality",
+        "visited": false
+
+    },
+    {
+        "name": "Alanta",
+        "imgurl": "https://t3.ftcdn.net/jpg/01/29/38/18/240_F_129381886_OZwjR8GhgBXdA44uIOvzCzjkjtufE47T.jpg",
+        "flighttype": "Short Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Old Gazebo Park, NYC",
+        "imgurl": "https://t3.ftcdn.net/jpg/04/80/15/62/240_F_480156237_TsgtfDIElFIs8Xhwqe9c31aupaV5pJLA.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "winter",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Snowy Mountain, Seattle",
+        "imgurl": "https://t4.ftcdn.net/jpg/03/27/60/59/240_F_327605957_piKnjPm1EXzj03ILHqAGr2d1JzTtTT88.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "winter",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Benin rep",
+        "imgurl": "https://t3.ftcdn.net/jpg/02/17/78/34/240_F_217783453_h1xYJ8uV7QvvZD3Y4iNPJDEhzkfRXCU5.jpg",
+        "flighttype": "Short Flight",
+        "climate": "hot",
+        "tag": "city",
+        "visited" : true
+    },
+    {
+        "name": "Sousse, Tunisia",
+        "imgurl": "https://t3.ftcdn.net/jpg/00/33/17/30/240_F_33173069_gk6LB54q3jKKeoqlRYGWn2Ha5jvRY2k5.jpg",
+        "flighttype": "Short Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": " Rome, Italy",
+        "imgurl": "https://t3.ftcdn.net/jpg/02/27/88/36/240_F_227883696_tvfOO6syjvdRJYZls1FvCSgUqfVAcNXL.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Cape Verde",
+        "imgurl": "https://t3.ftcdn.net/jpg/02/55/71/28/240_F_255712868_0uEdcDehATbjpAMR5qqxSlV6wVLu7Iiy.jpg",
+        "flighttype": "Short Flight",
+        "climate": "temperate",
+        "tag": "tropical",
+        "visited": false
+
+    },
+    {
+        "name": "Banff, AB, Canada",
+        "imgurl": "https://t4.ftcdn.net/jpg/03/01/92/43/240_F_301924320_BzW3NByLPCQ7Bs8nGsrYZTcvbDhVNiFP.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "winter",
+        "tag": "city",
+        "visited": false
+
+    },
+    {
+        "name": "Sevilla, Spain",
+        "imgurl": "https://t3.ftcdn.net/jpg/00/65/81/52/240_F_65815269_nuFDuCTzNNkoLl0L2gqhR2J5nJ8O0Xkd.jpg",
+        "flighttype": "Medium Flight",
+        "climate": "temperate",
+        "tag":  "city",
+        "visited": false
+
+    },
+    {
+        "name": "Dubai, UAE",
+        "imgurl": "https://t4.ftcdn.net/jpg/03/21/86/47/240_F_321864752_jBd0n0zmpCAiGhXySa07F7KQLMasPPSz.jpg",
+        "flighttype": "Long Flight",
+        "climate": "sunny",
+        "tag": "city",
+        "visited" : true
+    }
+]

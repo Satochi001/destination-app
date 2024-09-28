@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img{
+    border-radius: 5px 5px 0px 0px;
+    width: 100%;
+}
+
+  .places{
+    width: 290px;
+    margin: 0px 10px  20px 10px;
+    
+  }
+
+  h1 {
+    font-size: 29px;
+    font-weight: 500;
+    font-family: sans-serif;
+    color: #111827;
+  }
+  .margin-places{
+    padding: 90px;
+   
+    
+  }
+  p{
+    background-color: #dbeafe;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-size: 13px;
+    color: #4a4a4a;
+  }
+
+  
+  
+  
