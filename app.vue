@@ -4,5 +4,6 @@
     <NewDestination/>
     <NewPlaces/>
     <NewVisitedPlaces/>
+    <NewForm/>
   </div>
 </template>
