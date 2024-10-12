@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true
   },
+  ssr : false,
 
   modules: ['@nuxtjs/tailwindcss', '@nuxt/icon']
 })

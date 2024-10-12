@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* nav button and authentification */
+
+.logo {
+    font-size: 19px; 
+    font-weight: 500; 
+    padding: 8px 10px;
+}
+.addplace{
+    font-size: 16px; 
+    font-weight: 400; 
+    border: 1px solid white;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 8px 20px;
+   
+    
+  }
+
+  
 img{
     border-radius: 5px 5px 0px 0px;
     width: 100%;
@@ -10,6 +30,7 @@ img{
   .places{
     width: 290px;
     margin: 0px 10px  20px 10px;
+    position: relative;
     
   }
 
@@ -63,6 +84,50 @@ img{
     width: 500px;
     bottom: 37%;
     left: 55%;
+    display: "block";
   } 
  
+  /*newplaces*/
+  .tinted-background{
+    position: fixed;    /* Position it fixed to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;       /* Cover full width */
+    height: 100%;      /* Cover full height */
+    background-color: rgba(0, 0, 0, 0.5);  /* Black with 50% opacity */
+    z-index: 50;      /* Ensure it's below the overlay but above everything else */
+}
+
+  img{
+    border-radius: 5px 5px 0px 0px;
+    width: 100%;
+}
+
+  .places{
+    width: 290px;
+    margin: 0px 10px  20px 10px;
+    
+  }
+
+  h1 {
+    font-size: 29px;
+    font-weight: 500;
+    font-family: sans-serif;
+    color: #111827;
+  }
+  .margin-places{
+    padding: 90px;
+   
+    
+  }
+  p{
+    background-color: #dbeafe;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-size: 13px;
+    color: #4a4a4a;
+  }
+
+  
+  
   

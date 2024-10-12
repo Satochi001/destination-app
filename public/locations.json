@@ -1,11 +1,13 @@
 [
-    {
+    {   
         "name": " Kimono,Temple Japan",
         "imgurl": "https://t3.ftcdn.net/jpg/03/88/91/40/240_F_388914017_X0C5rjW63VY7HbIrssFkGrjMxavVSAwq.jpg",
         "flighttype": "Long Flight",
         "climate": "temperate",
         "tag": "spirituality",
-        "visited": true
+        "visited": true,
+        "isVisible": true
+
     },
     
     {
@@ -14,7 +16,9 @@
         "flighttype": "Medium Flight",
         "climate": "sunny",
         "tag": "adventures",
-        "visited": true
+        "visited": true,
+        "isVisible": true
+
 
     },
     
@@ -24,7 +28,9 @@
         "flighttype": "Long Flight",
         "climate": "sunny",
         "tag": "spirituality",
-        "visited": false
+        "visited": false,
+        "isVisible": true
+
 
     },
     {
@@ -33,7 +39,9 @@
         "flighttype":"Medium Flight",
         "climate": "sunny",
         "tag": "city",
-        "visited": false
+        "visited": false,
+        "isVisible": true
+
 
     },
     {
@@ -41,8 +49,9 @@
         "imgurl": "https://t4.ftcdn.net/jpg/02/74/31/83/240_F_274318370_wBHOPOO8AYRapUFkxgkioO2xtCsZvkXi.jpg",
         "flighttype": "Medium Flight",
         "climate": "sunny",
-        "tag": "tropical",
-        "visited": false
+        "tag": "beach",
+        "visited": false,
+        "isVisible": true
 
     },
     {
@@ -51,7 +60,10 @@
         "flighttype": "Long Flight",
         "climate": "winter",
         "tag": "adventures",
-        "visited": true
+        "visited": true,
+        "isVisible": true
+
+
 
     },
     {
@@ -84,15 +96,15 @@
         "name": "Brazil",
         "imgurl": "https://t4.ftcdn.net/jpg/02/67/36/83/240_F_267368352_TzkJF3gbC0eJreiIUkRoqdFUf6Hgn6R7.jpg",
         "flighttype": "Long Flight",
-        "climate": "sunny",
-        "tag": "tropical",
+        "climate": "temperate",
+        "tag": "beach",
         "visited": false
 
     },
     {
         "name": "Maui, Hawaii, USA",
         "imgurl": "https://t4.ftcdn.net/jpg/05/02/59/49/240_F_502594944_nAKgbe0VcjptOCV4NetuB3mQQhUugDy4.jpg",
-        "flighttype": "Medium Flight",
+        "flighttype": "Short Flight",
         "climate": "sunny",
         "tag": "beach",
         "visited": true
@@ -101,7 +113,7 @@
         "name": "Santorini, Greece",
         "imgurl": "https://t3.ftcdn.net/jpg/01/02/66/52/240_F_102665267_IgrQLv7nJjmtONkG2tArYmFGRcicsDi1.jpg",
         "flighttype": "Short Flight",
-        "climate": "winter",
+        "climate": "sunny",
         "tag": "city",
         "visited": false
 
@@ -207,9 +219,9 @@
     {
         "name": " Rome, Italy",
         "imgurl": "https://t3.ftcdn.net/jpg/02/27/88/36/240_F_227883696_tvfOO6syjvdRJYZls1FvCSgUqfVAcNXL.jpg",
-        "flighttype": "Medium Flight",
-        "climate": "temperate",
-        "tag": "city",
+        "flighttype": "Long Flight",
+        "climate": "sunny",
+        "tag": "adventures",
         "visited": false
 
     },

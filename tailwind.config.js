@@ -2,7 +2,12 @@
 export default {
   content: [],
   theme: {
-    extend: {},
+    extend: {
+      zIndex: {
+        '100': '100',
+        '50':'50'
+      }
+    },
   },
   plugins: [],
 }
