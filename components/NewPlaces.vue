@@ -72,7 +72,7 @@ import { ref, computed, onMounted, watchEffect } from 'vue';
 import Imagedisplay from './imagedisplay.vue';
 import NewDestination from './NewDestination.vue';
 import NewVisitedPlaces from './NewVisitedPlaces.vue';
-import type { Location } from '../public/types.ts';
+import type { Location } from '../public/types';
 
 // Define reactive state variables
 const locations = ref<Location[]>([]);

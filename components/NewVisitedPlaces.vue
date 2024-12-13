@@ -29,7 +29,7 @@
 
 <script  lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import type { Location } from '../public/types.ts'; // Import the Location type
+import type { Location } from '../public/types.js'; // Import the Location type
   
 export default defineComponent({
   name: 'NewVisitedPlaces',
