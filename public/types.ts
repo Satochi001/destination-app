@@ -4,5 +4,6 @@ export interface Location{
     tag : string,
     flighttype: string,
     imgurl : string,
+    visited: boolean,
 
  }

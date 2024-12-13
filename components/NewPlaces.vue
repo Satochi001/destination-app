@@ -7,18 +7,21 @@
   <div>
     <Login v-show="showLogin"
     :toggleLogin="showLogin"  
-    @toggleLogin="handleToggleLogin"    />
+    @toggleLogin="handleToggleLogin"/>
   </div>
 
   <div>
-    <div class="flex">
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 m-5 sm:m-5 lg:m-10 xl:m-20 w-full">
+ 
+
       <NewDestination
         :selectedType="selectedType"
         :selectedHumidity="selectedHumidity"
         :selectedFlight="selectedFlight"
         @filterChange="handleFilterChange"
       />
-      <Imagedisplay
+      <Imagedisplay 
+      
         :location="randomLocation"
         @openOverlay="openOverlay"
       />
@@ -26,27 +29,35 @@
 
     <div v-if="overlayOpen"   class="tinted-background"></div>
     <div v-if="showLogin"   class="tinted-background"></div>
-    <div class="margin-places">
-      <h1 class="p-2 pb-10" style="cursor: pointer;">Places we want to go</h1>
-      <ul class="flex flex-wrap">
+    <div class="m-12 sm:m-12 lg:m-16 xl:m-24 md:m-12">
+      <h1 class="p-2 pb-10 sm: pl-0 text-sm sm:text-base md:text-xl lg:text-3xl" style="cursor: pointer; ">Places we want to go</h1>   
+
+      <ul class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full">
         <li
           v-for="(location, index) in locations"
           :key="index"
           @click="openOverlay(location)"
-          class="flex flex-col items-start places bg-white shadow-lg border border-gray-200 rounded-lg cursor-pointer"
+          class="flex flex-col items-start relative bg-white shadow-lg border  border-gray-200 rounded-lg cursor-pointer  
+           "
         >
           <img :src="location.imgurl" alt="Location Image" />
           <div class="pl-5 pt-5">
             <h4 class="text-lg font-bold font-serif pl-1 pb-8">{{ location.name }}</h4>
             <div class="flex flex-wrap gap-3 pl-0.5 pb-8">
-              <p class="flex items-center"><span>{{ location.flighttype }}</span></p>
-              <p class="flex items-center"><span>{{ location.climate }}</span></p>
-              <p class="flex items-center"><span>{{ location.tag }}</span></p>
+              <p  class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.flighttype }}</span></p>
+              <p class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.climate }}</span></p>
+              <p class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.tag }}</span></p>
             </div>
           </div>
         </li>
       </ul>
     </div>
+
+    <NewVisitedPlaces
+    :locations="locations"
+    :getVisitedLocations ="getVisitedLocations"
+    @openOverlay="openOverlay"/>
+
 
     <NewForm
       :isVisible="overlayOpen"
@@ -60,6 +71,7 @@
 import { ref, computed, onMounted, watchEffect } from 'vue';
 import Imagedisplay from './imagedisplay.vue';
 import NewDestination from './NewDestination.vue';
+import NewVisitedPlaces from './NewVisitedPlaces.vue';
 import type { Location } from '../public/types.ts';
 
 // Define reactive state variables
@@ -107,6 +119,7 @@ watchEffect(() => {
   }
 });
 
+
 // Function to get a random location from the filtered locations
 const getRandomLocation = (filtered: Location[]): Location | null => {
   if (filtered.length > 0) {
@@ -115,6 +128,16 @@ const getRandomLocation = (filtered: Location[]): Location | null => {
   }
   return null;
 };
+
+//function to get visited location 
+
+const getVisitedLocations =()=>{
+  return locations.value.filter(location => location.visited === true );
+}
+
+
+
+
 
 // Method to update selected filters when filter changes
 const handleFilterChange = (payload: { type: string | null; humidity: string | null; flight: string | null }) => {
@@ -151,14 +174,4 @@ const fetchedLocation = async () => {
 onMounted(fetchedLocation);
 </script>
 
-<style scoped>
-.tinted-background {
-  /* Add your styles for the tinted background here */
-}
-.margin-places {
-  /* Add your styles for margin places here */
-}
-.places {
-  /* Add your styles for place cards here */
-}
-</style>
+

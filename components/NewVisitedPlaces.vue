@@ -1,8 +1,13 @@
 <template>
-    <div class="margin-places">
-        <h1 class="p-2 pb-10">Places we've been</h1>
-        <ul class="flex flex-wrap">
-            <li v-for= 'location in getVisitedlocation()' :key = "location.name" class="flex flex-col items-col bg-white border shadow-lg rounded-lg places">
+    <div class="m-12 sm:m-12 lg:m-16 xl:m-24 md:m-12" >
+      <h1 class="p-2 pb-10 sm: pl-0 text-sm sm:text-base md:text-xl lg:text-3xl cursor-pointer " >Places we've been</h1>
+      <ul class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full">
+        
+        
+          <li v-for= 'location in getVisitedLocations()' :key='location.name' 
+          class="flex flex-col items-start relative bg-white shadow-lg border  border-gray-200 rounded-lg cursor-pointer"
+          @click="$emit('openOverlay', location)"
+          >
                 <img :src="location.imgurl"/>
                <div class="pl-5 pt-5">
              <h4 class='text-lg font-bold font-serif pl-1 pb-8' >{{ location.name }}</h4>
@@ -22,30 +27,23 @@
     </div>
 </template>
 
-<script>
-export default{
-    data(){
-        return{
-          locations:[]
-        }
-    },
-    methods : {
-        getVisitedlocation(){
-       return this.locations.filter(location=> location.visited===true);
-     }
-    },
-    
-    mounted(){
-      fetch('/locations.json')
-      .then(response => response.json())
-      .then(data=>{
-        this.locations = data
-      })
-      .catch(Error=>{
-        console.error('Error: failed to load json file:', Error)
-      })
+<script  lang="ts">
+import { defineComponent, type PropType } from 'vue';
+import type { Location } from '../public/types.ts'; // Import the Location type
+  
+export default defineComponent({
+  name: 'NewVisitedPlaces',
+    props :{
+      locations: {
+        type: Array as PropType<Location[]>,
+        required: true ,
+      },
 
-    }
-}
+      getVisitedLocations:{
+        type: Function as PropType<()=>Location[]>,
+        required: true,
+      },
+    },
+});
 
 </script>

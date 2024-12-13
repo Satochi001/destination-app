@@ -7,7 +7,6 @@ import NewPlaces from './components/NewPlaces.vue';
 
     <NewPlaces/>
     
-    <NewVisitedPlaces/>
   </div>
 </template>
 

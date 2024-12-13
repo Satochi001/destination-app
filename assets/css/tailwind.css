@@ -40,11 +40,7 @@ img{
     font-family: sans-serif;
     color: #111827;
   }
-  .margin-places{
-    padding: 90px;
-   
-    
-  }
+  
   p{
     background-color: #dbeafe;
     border-radius: 10px;
@@ -70,22 +66,30 @@ img{
   }
   
   .selection {
-    align-items: flex-start;
-    margin-top: 50px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
     color: #4a4a4a;
   }
   
-  .margin {
-    margin-left: 6rem;
-  }
+ 
 
   .animation-wrapper{
     position: absolute;
-    width: 500px;
-    bottom: 37%;
-    left: 55%;
-    display: "block";
-  } 
+    bottom: 0 ;
+    top: 7rem;
+    left: 57.5rem;
+    right: 0rem;
+  
+
+    
+
+  }
+
+  div[ref="lottieAnimation"] {
+    border-radius: 0px; /* Remove border from the Lottie animation container */
+    outline: none; /* Just in case there's an outline */
+  }
+  
+  
  
   /*newplaces*/
   .tinted-background{
@@ -128,6 +132,8 @@ img{
     color: #4a4a4a;
   }
 
+  
+    
   
   
   
