@@ -6,6 +6,15 @@ export default defineNuxtConfig({
     typeCheck: true
   },
   ssr : false,
+  app: {
+    baseURL: '/destination-app', // Replace with your GitHub repo name
+  },
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/icon']
-})
+
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/icon'],
+  generate: {
+    routes: ['/'],
+  },
+
+  
+});

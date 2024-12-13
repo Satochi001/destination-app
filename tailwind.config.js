@@ -1,11 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: [
+    './pages/**/*.{js,ts,vue}',      // Path to your pages
+    './components/**/*.{js,ts,vue}', // Path to your components
+    './layouts/**/*.{js,ts,vue}',    // Path to your layouts
+    './plugins/**/*.{js,ts,vue}'     // Path to your plugins
+  ],
   theme: {
     extend: {
       zIndex: {
         '100': '100',
-        '50':'50'
+        '50': '50'
       },
       spacing: {
         '12': '3rem',  // 48px
@@ -16,7 +21,6 @@ export default {
         '28': '7rem',   // 112px
         '30': '9rem',
         '32': '11rem'
-        // Add more if needed
       },
       screens: {
         'xs': '480px', // Custom breakpoint for screens 480px and above
@@ -25,4 +29,3 @@ export default {
   },
   plugins: [],
 }
-
