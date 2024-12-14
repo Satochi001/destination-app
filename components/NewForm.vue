@@ -76,30 +76,33 @@
     
     <div class=" text-xs">
       <h5 class="uppercase text-xs font-bold text-gray-500">tags </h5>
-      <div class="flex items-start mt-4">
-        <div class="flex items-col flex-col ">
-          <h3 class="text-xs uppercase">Type</h3>
+      <div class="flex items-start mt-6 space-x-24">
+        <div class="flex items-col flex-col  ">
+          <h3 class="text-xs uppercase " >Type</h3>
           <div class="flex flex-col space-y-1 pt-3  font-serif text-base">
-            <label><input type="radio"> Adventures</label>
-            <label><input type="radio"> Spirituality</label>
-            <label><input type="radio"> Beach</label>
-            <label><input type="radio"> City</label>
+            <label><input type="radio" name="type" value="adventures" :checked="selectedType === 'adventures'"> Adventures</label>
+            <label><input type="radio" name="type" value="spirituality" :checked="selectedType === 'spirituality'" > Spirituality</label>
+            <label><input type="radio" name="type" value="beach" :checked="selectedType === 'beach'" > Beach</label>
+            <label><input type="radio" name="type" value="city" :checked="selectedType === 'city'" > City</label>
           </div>
         </div>
         <div class="flex flex-col items-col margin">
           <h3 class="text-xs uppercase">Humidity</h3>
           <div class="flex flex-col space-y-1 pt-3 text-base font-serif">
-            <label><input type="radio"> Sunny</label>
-            <label><input type="radio"> Temperate</label>
-            <label><input type="radio"> Winter</label>
+            <label><input type="radio" name="humidity" value="sunny" :checked="selectedHumidity === 'sunny'" > Sunny</label>
+            <label><input type="radio" name="humidity" value="temperate":checked="selectedHumidity === 'temperate'" > Temperate</label>
+            <label><input type="radio" name="humidity" value="winter" :checked="selectedHumidity === 'winter'" > Winter</label>
           </div>
         </div>
         <div class="flex items-col flex-col margin">
           <h3 class="text-xs uppercase font-serif">Flight</h3>
           <div class="flex flex-col space-y-1 pt-3 text-base  font-serif">
-            <label><input type="radio"> Medium</label>
-            <label><input type="radio"> Long</label>
-            <label><input type="radio"> Short</label>
+            <label><input type="radio" name="flight" value="Medium Flight"  :checked="selectedFlight === 'Medium Flight'"  > Medium</label>
+            <label><input type="radio" name="flight" value="Long Flight"   :checked="selectedFlight === 'Long Flight'"> Long</label>
+            <label>
+              <input type="radio" name="flight" value="Short Flight"  :checked="selectedFlight === 'Short Flight'"
+
+              > Short</label>
           </div>
         </div>
       </div>
@@ -113,12 +116,20 @@
   
   <script setup lang="ts">
 
+
   // define props 
  // Define props for the FormOverlay component
 const props = defineProps<{
   isVisible: boolean;
   selectedLocation: { name: string, imgurl : string} | null;
+  selectedHumidity: string | null;
+  selectedFlight: string | null;
+  selectedType: string | null;
+  
+ 
 }>();
+
+;
 
 // Define emit for the closeOverlay event
 const emit = defineEmits<{
@@ -132,10 +143,7 @@ const emit = defineEmits<{
   
   </script>
   <style>
-  .parent{
-
-  
-  }
+ 
   
   
   .overlay{

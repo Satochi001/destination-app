@@ -90,7 +90,8 @@ const selectedFlight = ref(props.selectedFlight);
 
 // Methods to update filters and emit events
 const updateType = (value: string) => {
-  selectedType.value = value;  // Update local reactive variable
+  // Update local reactive variable
+  selectedType.value = value;  
   emit('update:selectedType', value); // Emit to parent
   console.log('Selected  type:', value)
 };

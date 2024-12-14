@@ -62,7 +62,11 @@
     <NewForm
       :isVisible="overlayOpen"
       :selectedLocation="selectedLocation"
-      @closeOverlay="closeOverlay"
+      :selectedType="selectedType"
+      :selectedHumidity="selectedHumidity"
+      :selectedFlight="selectedFlight"
+    
+         @closeOverlay="closeOverlay"
     />
   </div>
 </template>

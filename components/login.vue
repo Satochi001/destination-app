@@ -1,5 +1,5 @@
 <template>
-    
+
    <div class="flex   z-[100] relative auth-container">
       
       <div class="shadow-lg border bg-white  rounded-lg flex flex-col auth">
@@ -21,7 +21,7 @@
     </div>
      </div>
 
-  </template>
+</template>
 
 <script setup lang="ts">
 import { signInWithEmailAndPassword } from "firebase/auth";
