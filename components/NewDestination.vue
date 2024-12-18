@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="animation-wrapper">
-      <div ref="lottieAnimation" style="width: 400px; height: 400px;" class="relative"></div>
+      <div ref="lottieAnimation" style="width: 360px;" class="relative"></div>
     </div>
     </div>
     

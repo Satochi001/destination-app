@@ -22,8 +22,8 @@
         </li>
         
       </ul>
-      <ul v-else class=" p-2 sm:p-8 m-10 sm:m-20 lg:m-10 lg:ml-32 "> 
-        <p class=" p-10 sm: 4/6  w-full">No matching locations found based on your filter criteria.</p>
+      <ul v-else class=" m-[4rem] bg-blue-200 rounded-md h-[2rem] w-[30rem]"> 
+        <span class="items-center flex justify-center m-[2rem]">No matching locations found based on your filter criteria.</span>
       </ul>
     
       

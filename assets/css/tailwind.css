@@ -75,9 +75,13 @@ img{
   .animation-wrapper{
     position: absolute;
     bottom: 0 ;
-    top: 7rem;
+    top: 240px;
     left: 57.5rem;
     right: 0rem;
+    background-color: white; /* A blue background color */
+    background-blend-mode: multiply; /* Blends the image and color */
+    background-size: cover; /* Ensures the image covers the whole area */
+    background-position: center; /* Centers the image */
   
 
     
@@ -85,7 +89,7 @@ img{
   }
 
   div[ref="lottieAnimation"] {
-    border-radius: 0px; /* Remove border from the Lottie animation container */
+    border-radius: 10px; /* Remove border from the Lottie animation container */
     outline: none; /* Just in case there's an outline */
   }
   
