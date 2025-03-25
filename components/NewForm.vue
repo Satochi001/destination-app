@@ -21,6 +21,13 @@
           <label for="name" class="text-xs font-bold text-gray-500">NAME</label>
           <input type="text" id="name" class="border block w-full px-2 py-2 text-base bg-blue-50 rounded-lg" :placeholder="selectedLocation?.name ?? 'Enter place name'"/>
         </div>
+
+        <!--  Map of location -->
+        <displayMap />
+
+
+
+
   
         <!-- Other form fields here... -->
         <div class="relative z-0 w-full mb-9 pb-10 group">
@@ -115,8 +122,7 @@
   </template>
   
   <script setup lang="ts">
-
-
+  import displayMap from './mapcomponent/displayMap.vue';
   // define props 
  // Define props for the FormOverlay component
 const props = defineProps<{

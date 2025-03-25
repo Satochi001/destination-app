@@ -11,6 +11,7 @@
     },
     
     {
+
         "name": "Namibia",
         "imgurl": "https://t4.ftcdn.net/jpg/04/43/41/61/240_F_443416158_XhWfJAeRuqeRV2I3r16O2IQT3KxuslnY.jpg",
         "flighttype": "Medium Flight",
@@ -146,6 +147,7 @@
 
     },
     {
+
         "name": "Venice,Italy",
         "imgurl": "https://t4.ftcdn.net/jpg/00/37/09/75/240_F_37097506_d51HMPaADr1u8Trs2Rk8UzXC5DOr9dNc.jpg",
         "flighttype": "Medium Flight",
@@ -164,6 +166,7 @@
 
     },
     {
+
         "name": "St Sernin, Toulouse",
         "imgurl": "https://t4.ftcdn.net/jpg/02/78/83/67/240_F_278836788_SsP1v9A7S4djra3G2dHSFRfXLTjSfrKy.jpg",
         "flighttype": "Medium Flight",
@@ -173,7 +176,7 @@
 
     },
     {
-        "name": "Alanta",
+        "name": "Atlanta",
         "imgurl": "https://t3.ftcdn.net/jpg/01/29/38/18/240_F_129381886_OZwjR8GhgBXdA44uIOvzCzjkjtufE47T.jpg",
         "flighttype": "Short Flight",
         "climate": "temperate",
