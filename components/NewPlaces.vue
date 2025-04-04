@@ -95,6 +95,8 @@ const handleToggleLogin = () => {
   console.log("Login button clicked");
 };
 
+
+//this handle page to display in fixed way. 
 const fixedpage =()=>{
   if(showLogin.value===true){
      document.documentElement.style.overflow ="hidden";
@@ -102,6 +104,8 @@ const fixedpage =()=>{
     document.documentElement.style.overflow=""
   }
 }
+
+
 // Computed property to filter locations based on selected filters
 const filteredLocations = computed(() => {
   return locations.value.filter((location) => {
@@ -166,11 +170,30 @@ const closeOverlay = () => {
 // Fetch locations (mocking with an example URL for now)
 const fetchedLocation = async () => {
   try {
-    const response = await fetch('/locations.json');
-    const data: Location[] = await response.json();
-    locations.value = data;
+    const response = await fetch('/api/location');
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      throw new Error(`Expected JSON, got ${contentType}`);
+    }
+
+    const data = await response.json();
+    console.log('API Response FRONTEND :', data); // Debugging
+
+    // Validate and assign locations
+    if (Array.isArray(data.data)) {
+      locations.value = data.data;
+    } else {
+      console.error('API returned invalid data:', data);
+      locations.value = [];
+    }
   } catch (error) {
-    console.error("Error trying to fetch JSON:", error);
+    console.error('API Failure:', error);
+    locations.value = [];
   }
 };
 

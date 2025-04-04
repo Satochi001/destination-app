@@ -4,14 +4,14 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST as string,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER as string,
+  password: process.env.DB_PASSWORD as string,
+  database: process.env.DB_NAME as string,
 });
 
-const connectDB = async () => {
+const connectDB = async (): Promise<void> => {
   try {
     const client = await pool.connect();
     console.log('Connected to PostgreSQL');

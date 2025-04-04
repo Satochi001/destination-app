@@ -14,6 +14,22 @@ export default defineNuxtConfig({
 		watcher: "parcel", // 'chokidar' or 'parcel' are also options
 	},
 
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:5001', // Your backend URL
+    },
+  },
+
+  nitro: {
+    publicAssets: [
+      { dir: './public' } // Ensure this matches your dir
+    ],
+
+    routeRules: {
+      '/api/**': { proxy: 'http://localhost:5001/api/**' },
+
+    }
+  },
 
   typescript: {
     typeCheck: true
