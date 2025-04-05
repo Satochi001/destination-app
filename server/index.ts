@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
+import cron from 'node-cron';
 let app: any = null;
 
   import express from 'express';
@@ -28,20 +28,40 @@ let app: any = null;
     next();
   });
   
+  cron.schedule('0 * * * *', async () => {
+    console.log('Manually triggering fetchAndstore...');
+    await fetchAndstore();
+  });
 
-  app.get('/unsplash', async (req: any, res: any) => {
+
+  async function fetchAndstore(): Promise<void>{
+    console.log('fetchAndstore function called at:', new Date().toISOString());
+
     try {
       const data = await fetchUnsplashDt();
-      if (!data) {
-        res.status(500).json({ error: 'Failed to retrieve data' }); // Changed to json()
+      if (!data || data.length === 0 ) {
+        console.error('Failed to retrieve data');
         return;
       }
-      const storedDT = await storeDt(data);
-      res.json(storedDT || { error: 'No data stored' });
+
+      for(const record of data){
+        const storedDT = await storeDt(record);
+
+        if(!storedDT){
+          console.error('No data stored', record );
+        }else {
+          console.log('record successfully stroed:', storeDt)
+        }
+
+      }
+      // STORE DT TO DB 
+ 
+     
     } catch (error) {
-      res.status(500).json({ error: 'Internal system error' }); // Standardized to json()
+      console.error('Internal system error:', error);
+
     }
-  });
+  }
 
 
 
@@ -95,24 +115,28 @@ let app: any = null;
   
 
   //FUNCTION TO FETCH DATA FROM UNSPLASH
-  async function fetchUnsplashDt(): Promise<UnsplashData | null> {
+  async function fetchUnsplashDt(): Promise<UnsplashData[] | null> {
 
     try {
-      const res = await fetch('https://api.unsplash.com/collections/98759449/photos?per_page=5', {
+      console.log('Fetching data from Unsplash...');
+
+      const res = await fetch('https://api.unsplash.com/collections/98759449/photos?per_page=30', {
         headers: { Authorization: `Client-ID ${access_key}` },
       });
 
       if (!res.ok) throw new Error('Failed to retrieve data from Unsplash');
 
       const data = await res.json();
-      return {
-        id: data.id,
-        name: data.location?.name || 'unknown',
-        imgurl: data.urls?.regular || 'unknown',
-        flighttype: data.flight_type || 'unknown',
-        climate: data.climate || 'unknown',
+
+      console.log("unsplash response witn data ", data)
+      return data.map((item : any)=>({
+        id: item.id,
+        name: item.location?.name || 'unknown',
+        imgurl: item.urls?.regular || 'unknown',
+        flighttype: item.flight_type || 'unknown',
+        climate: item.climate || 'unknown',
         visited: false,
-      };
+      }));
     } catch(error){
         console.error('Failed to fetch API data', error);
         return null;
@@ -124,7 +148,9 @@ let app: any = null;
   async function storeDt({ id, name, imgurl }: UnsplashData): Promise<UnsplashData | null> {
 
     try {
-      const query = 'INSERT INTO destinations (id, name, imgurl) VALUES ($1, $2, $3) RETURNING *';
+      console.log('Storing data in the database:', { id, name, imgurl });
+
+      const query = 'INSERT INTO destinations (id, name, imgurl) VALUES ($1, $2, $3) ON CONFLICT(id) DO NOTHING RETURNING *';
       const values = [id, name, imgurl];
       const result = await pool.query(query, values);
       return result.rows[0];
