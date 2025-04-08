@@ -3,7 +3,7 @@ dotenv.config();
 import cron from 'node-cron';
 let app: any = null;
 
-  import express from 'express';
+  import express, { json } from 'express';
   import pool from './database/db';
   
   app = express();
@@ -17,6 +17,7 @@ let app: any = null;
     imgurl: string;
     flighttype: string;
     climate: string;
+    tag: string;
     visited: boolean;
   }
 
@@ -28,10 +29,12 @@ let app: any = null;
     next();
   });
   
-  cron.schedule('0 * * * *', async () => {
+  cron.schedule('* * * * *', async () => {
     console.log('Manually triggering fetchAndstore...');
     await fetchAndstore();
   });
+
+  console.log('cron schedule to run in minutes .')
 
 
   async function fetchAndstore(): Promise<void>{
@@ -76,6 +79,7 @@ let app: any = null;
         imgurl: row.imgurl, // Map 'img_url' to 'imgurl'
         flighttype: row.flight_type, // Map 'flight_type'
         climate: row.climate, // Map 'climate'
+        tag : row.tag,
         visited: row.visited, // Map 'visited'
       }));
       console.log('Mapped Locations:', locations); // Debugging
@@ -93,7 +97,7 @@ let app: any = null;
   // Fixed route case and Cache-Control header
   app.get('/api/location', async (req: any, res: any) => {
     try {
-      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.setHeader('Cache-Control', 'public, max-age=100');
       const data = await getLocation();
   
       if (!data || data.length === 0) {
@@ -112,7 +116,81 @@ let app: any = null;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
+  //FUNCTION TO INSERT DATA IN OUR DB 
+  //sql-injection Unchecked input in database commands can alter intended queries
+
+  async function storeDt({ id, name, imgurl, flighttype,climate, visited }: UnsplashData): Promise<UnsplashData | null> {
+
+    try {
+      console.log('Storing data in the database:', { id, name, imgurl, flighttype, climate, visited });
+
+      const query = `INSERT INTO destinations (id, name, imgurl, flight_type, climate, visited)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      ON CONFLICT(id) DO NOTHING
+      RETURNING *`;
+const values = [id, name, imgurl, flighttype, climate, visited];
+      const result = await pool.query(query, values);
+
+      console.log('Query:', query);
+      console.log('Values:', values);
+      return result.rows[0];
+    } catch (error) {
+      console.error('Failed to store data in DB', error);
+      return null;
+    }
+  }
+
+  // function to determine flight type 
+
+  function determineFlightType(userLocation: { lat: number; lon: number }, destinationLocation: { lat: number; lon: number }): string {
+    const distance = calculateDistance(userLocation, destinationLocation); // Use Haversine formula
+    return distance < 1500 ? 'short' : 'long';
+  }
   
+  function calculateDistance(loc1: { lat: number; lon: number }, loc2: { lat: number; lon: number }): number {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = ((loc2.lat - loc1.lat) * Math.PI) / 180;
+    const dLon = ((loc2.lon - loc1.lon) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((loc1.lat * Math.PI) / 180) * Math.cos((loc2.lat * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+  }
+
+
+  //create fucntion that call for the wealther api 
+
+  async function fetchWealtherApi (location : string ): Promise<string>{
+    try{
+      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.WEATHER_API_KEY}`);
+      const data = await res.json();
+      return data.wealther[0].main || 'unknown '; 
+
+    }catch(error){
+      console.log('failed to get location weather :', error);
+      return 'unknown';
+
+    }
+  }
+
+
+  // function to relational tags; 
+
+  async  function assignTags (locationName: string): Promise<string[]>{
+
+    //array to save matched taged 
+    const tags: string[]  = [];
+
+
+    if(locationName.toLowerCase().includes( 'mountain' )) tags.push("resort"); 
+    if(locationName.toLocaleLowerCase().includes('temple')) tags.push("spiritual");
+    if(locationName.toLocaleLowerCase().includes('museum')) tags.push("Historical")
+    
+    return tags.length < 0 ? tags : ["general"];
+
+  }
+
 
   //FUNCTION TO FETCH DATA FROM UNSPLASH
   async function fetchUnsplashDt(): Promise<UnsplashData[] | null> {
@@ -127,35 +205,30 @@ let app: any = null;
       if (!res.ok) throw new Error('Failed to retrieve data from Unsplash');
 
       const data = await res.json();
-
       console.log("unsplash response witn data ", data)
-      return data.map((item : any)=>({
-        id: item.id,
-        name: item.location?.name || 'unknown',
-        imgurl: item.urls?.regular || 'unknown',
-        flighttype: item.flight_type || 'unknown',
-        climate: item.climate || 'unknown',
-        visited: false,
-      }));
+
+
+
+      //hardcoded-credentials Embedding credentials in source code risks unauthorized access, update later 
+      return await Promise.all(
+        data.map(async  (item : any)=> {
+          const  climate = await fetchWealtherApi(item.location?.name || 'unknown');
+          const tags  = await assignTags(item.location?.name || 'unknown ');
+
+          return {
+            id: item.id,
+            name: item.location?.name || item.alt_description|| 'unknown',
+            imgurl: `${item.urls?.regular}&w=800&h=600&fit=crop`,
+            flighttype: 'null',
+            climate,
+            tag : tags,
+          }
+          
+        })
+        
+      )
     } catch(error){
         console.error('Failed to fetch API data', error);
         return null;
-    }
-  }
-
-  //FUNCTION TO INSERT DATA IN OUR DB 
-
-  async function storeDt({ id, name, imgurl }: UnsplashData): Promise<UnsplashData | null> {
-
-    try {
-      console.log('Storing data in the database:', { id, name, imgurl });
-
-      const query = 'INSERT INTO destinations (id, name, imgurl) VALUES ($1, $2, $3) ON CONFLICT(id) DO NOTHING RETURNING *';
-      const values = [id, name, imgurl];
-      const result = await pool.query(query, values);
-      return result.rows[0];
-    } catch (error) {
-      console.error('Failed to store data in DB', error);
-      return null;
     }
   }

@@ -171,6 +171,7 @@ const closeOverlay = () => {
 const fetchedLocation = async () => {
   try {
     const response = await fetch('/api/location');
+    console.log('loading from end  ')
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${await response.text()}`);
