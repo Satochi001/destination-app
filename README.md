@@ -92,6 +92,8 @@ Coming soon...
 ## 📚 License
 This project is **open-source** under the MIT License.
 
+##  you can contribute to this project 
+
 ---
 💌 Feel free to connect & contribute! 🚀
 
