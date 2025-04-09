@@ -8,7 +8,7 @@ This is a **minimal yet powerful** Nuxt 3 starter project designed to help users
 ## 🔧 Tech Stack
 - **Framework**: Nuxt 3 (Vue.js)
 - **Package Manager**: npm / pnpm / yarn / bun
-- **Deployment**: not deployed yet 
+- **Deployment**: not deployed yet.
 
 ## 🛠 Setup & Installation
 ### 1️⃣ Clone the Repository
