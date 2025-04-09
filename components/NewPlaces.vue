@@ -46,7 +46,7 @@
             <div class="flex flex-wrap gap-3 pl-0.5 pb-8">
               <p  class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.flighttype }}</span></p>
               <p class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.climate }}</span></p>
-              <p class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.tag }}</span></p>
+              <p class="flex items-center"><Icon name="uil:tag" style="font-size: 13px;" class="w-5"/><span>{{ location.tag}}</span></p>
             </div>
           </div>
         </li>

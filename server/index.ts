@@ -70,7 +70,15 @@ let app: any = null;
 
   async function getLocation(): Promise<UnsplashData[] | null> {
     try {
-      const result = await pool.query('SELECT * FROM destinations');
+      //join releative tag  data to the the main destination column 
+      const result = await pool.query(`
+        SELECT d.*, ARRAY_AGG(t.name) AS tags
+        FROM destinations d 
+        LEFT JOIN destination_tags dt ON d.id = dt.destination_id
+        LEFT JOIN  tags t ON dt.tag_id = t.id
+        GROUP BY d.id;`
+      );
+
 
 
       const locations: UnsplashData[] = result.rows.map((row: any) => ({
@@ -79,7 +87,7 @@ let app: any = null;
         imgurl: row.imgurl, // Map 'img_url' to 'imgurl'
         flighttype: row.flight_type, // Map 'flight_type'
         climate: row.climate, // Map 'climate'
-        tag : row.tag,
+        tag : row.tags || [],
         visited: row.visited, // Map 'visited'
       }));
       console.log('Mapped Locations:', locations); // Debugging
@@ -116,23 +124,53 @@ let app: any = null;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
+  // function to insert relational  tags into data base; 
+
+  async function storetags(destinationId: string, tags: string): Promise<void>{
+    try{
+      for(let tag of tags){
+        const  tagResult = await pool.query(`INSERT INTO tags (name) VALUES($1) ON CONFLICT (name) DO NOTHING RETURNING id`, [tag]
+        );
+
+        const tagId = tagResult.rows[0]?.id || (
+          await pool.query(`SELECT id FROM tags WHERE name = $1`, [tag])
+        ).rows[0].id;
+
+      
+
+      //link tag to destinatin 
+
+      await pool.query(
+        `INSERT INTO destination_tags (destination_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING `,
+        [destinationId, tagId]
+      )
+    }
+    }catch(error){
+      console.log("failed to store tags", error )
+
+    }
+  }
+
+
+
   //FUNCTION TO INSERT DATA IN OUR DB 
   //sql-injection Unchecked input in database commands can alter intended queries
 
-  async function storeDt({ id, name, imgurl, flighttype,climate, visited }: UnsplashData): Promise<UnsplashData | null> {
+  async function storeDt({ id, name, imgurl, flighttype,climate, tag, visited }: UnsplashData): Promise<UnsplashData | null> {
 
     try {
-      console.log('Storing data in the database:', { id, name, imgurl, flighttype, climate, visited });
+      console.log('Storing data in the database:', { id, name, imgurl, flighttype, climate, tag, visited });
 
-      const query = `INSERT INTO destinations (id, name, imgurl, flight_type, climate, visited)
+    const query = `INSERT INTO destinations (id, name, imgurl, flight_type, climate, visited)
       VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT(id) DO NOTHING
       RETURNING *`;
-const values = [id, name, imgurl, flighttype, climate, visited];
+    const values = [id, name, imgurl, flighttype, climate, visited];
       const result = await pool.query(query, values);
 
-      console.log('Query:', query);
-      console.log('Values:', values);
+      if(result.rows[0]){
+        await storetags(id, tag)
+      }
       return result.rows[0];
     } catch (error) {
       console.error('Failed to store data in DB', error);
@@ -187,7 +225,7 @@ const values = [id, name, imgurl, flighttype, climate, visited];
     if(locationName.toLocaleLowerCase().includes('temple')) tags.push("spiritual");
     if(locationName.toLocaleLowerCase().includes('museum')) tags.push("Historical")
     
-    return tags.length < 0 ? tags : ["general"];
+    return tags.length > 0 ? tags : [`general`];
 
   }
 
