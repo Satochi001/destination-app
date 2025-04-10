@@ -5,6 +5,7 @@ let app: any = null;
 
   import express, { json } from 'express';
   import pool from './database/db';
+import { convertToObject } from 'typescript';
   
   app = express();
   app.use(express.json());
@@ -72,7 +73,7 @@ let app: any = null;
     try {
       //join releative tag  data to the the main destination column 
       const result = await pool.query(`
-        SELECT d.*, ARRAY_AGG(t.name) AS tags
+        SELECT d.*, STRING_AGG(t.name, ', ') AS tags
         FROM destinations d 
         LEFT JOIN destination_tags dt ON d.id = dt.destination_id
         LEFT JOIN  tags t ON dt.tag_id = t.id
@@ -87,7 +88,7 @@ let app: any = null;
         imgurl: row.imgurl, // Map 'img_url' to 'imgurl'
         flighttype: row.flight_type, // Map 'flight_type'
         climate: row.climate, // Map 'climate'
-        tag : row.tags || [],
+        tag : row.tags || 'general',
         visited: row.visited, // Map 'visited'
       }));
       console.log('Mapped Locations:', locations); // Debugging
@@ -126,28 +127,25 @@ let app: any = null;
 
   // function to insert relational  tags into data base; 
 
-  async function storetags(destinationId: string, tags: string): Promise<void>{
-    try{
-      for(let tag of tags){
-        const  tagResult = await pool.query(`INSERT INTO tags (name) VALUES($1) ON CONFLICT (name) DO NOTHING RETURNING id`, [tag]
-        );
+  async function storetags(destinationId: string, tags: string): Promise<string | undefined> {
+    try {
+      //insert tag and get result 
+      const tagResult = await pool.query(`INSERT INTO tags (name) VALUES($1) ON CONFLICT (name) DO NOTHING RETURNING id`, [tags]);
 
-        const tagId = tagResult.rows[0]?.id || (
-          await pool.query(`SELECT id FROM tags WHERE name = $1`, [tag])
-        ).rows[0].id;
+      const tagId = tagResult.rows[0]?.id || (
+        await pool.query(`SELECT id FROM tags WHERE name = $1`, [tags])
+      ).rows[0].id;
 
-      
-
-      //link tag to destinatin 
-
+      //link tag to destination 
       await pool.query(
         `INSERT INTO destination_tags (destination_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING `,
         [destinationId, tagId]
-      )
-    }
-    }catch(error){
-      console.log("failed to store tags", error )
+      );
 
+      return `Tag with ${tagId} successfully linked to destination ${destinationId}`;
+    } catch (error) {
+      console.log("failed to store tags", error);
+      return undefined;
     }
   }
 
@@ -215,18 +213,17 @@ let app: any = null;
 
   // function to relational tags; 
 
-  async  function assignTags (locationName: string): Promise<string[]>{
+  async  function assignTags (locationName: string): Promise<string>{
+    // save tag data 
+    if(locationName.toLowerCase().includes('mountain') ||locationName.toLowerCase().includes('mountainreturn' )) return "resort"; 
+    if(locationName.toLocaleLowerCase().includes('temple')) return  "spiritual";
+    if(locationName.toLocaleLowerCase().includes('museum')) return  "Historical";
+    if(locationName.toLowerCase().includes('sunset') ||locationName.toLowerCase().includes('daytime' )) return "natural"; 
 
-    //array to save matched taged 
-    const tags: string[]  = [];
-
-
-    if(locationName.toLowerCase().includes( 'mountain' )) tags.push("resort"); 
-    if(locationName.toLocaleLowerCase().includes('temple')) tags.push("spiritual");
-    if(locationName.toLocaleLowerCase().includes('museum')) tags.push("Historical")
+    if(locationName.toLowerCase().includes('white') ||locationName.toLowerCase().includes('castle' )) return "solitude"; 
     
-    return tags.length > 0 ? tags : [`general`];
-
+      return 'general'
+    
   }
 
 
@@ -251,18 +248,18 @@ let app: any = null;
       return await Promise.all(
         data.map(async  (item : any)=> {
           const  climate = await fetchWealtherApi(item.location?.name || 'unknown');
-          const tags  = await assignTags(item.location?.name || 'unknown ');
-
+          const tags  = await assignTags(item.location?.name || item.alt_description);
           return {
             id: item.id,
             name: item.location?.name || item.alt_description|| 'unknown',
-            imgurl: `${item.urls?.regular}&w=800&h=600&fit=crop`,
+            imgurl: `${item.urls?.raw}&w=800&h=600&fit=crop`,
             flighttype: 'null',
             climate,
             tag : tags,
           }
+
           
-        })
+        }),
         
       )
     } catch(error){
