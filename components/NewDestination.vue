@@ -18,6 +18,12 @@
           <label>
             <input class="md:scale-70 sm:scale-70" type="radio" name="type" value="city" :checked="selectedType === 'city'" @change="updateType('city')"> City
           </label>
+          <label>
+            <input class="md:scale-70 sm:scale-70" type="radio" name="type" value="general" :checked="selectedType === 'general'" @change="updateType('general')"> General
+          </label>
+          <label>
+            <input class="md:scale-70 sm:scale-70" type="radio" name="type" value="natural" :checked="selectedType === 'natural'" @change="updateType('natural')"> Natural
+          </label>
         </div>
       </div>
 

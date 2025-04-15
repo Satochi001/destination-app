@@ -5,7 +5,6 @@ let app: any = null;
 
   import express, { json } from 'express';
   import pool from './database/db';
-import { convertToObject } from 'typescript';
   
   app = express();
   app.use(express.json());
@@ -19,7 +18,7 @@ import { convertToObject } from 'typescript';
     flighttype: string;
     climate: string;
     tag: string;
-    visited: boolean;
+    visited: Boolean;
   }
 
   // Fixed CORS middleware (typos corrected)
@@ -39,7 +38,6 @@ import { convertToObject } from 'typescript';
 
 
   async function fetchAndstore(): Promise<void>{
-    console.log('fetchAndstore function called at:', new Date().toISOString());
 
     try {
       const data = await fetchUnsplashDt();
@@ -72,12 +70,20 @@ import { convertToObject } from 'typescript';
   async function getLocation(): Promise<UnsplashData[] | null> {
     try {
       //join releative tag  data to the the main destination column 
-      const result = await pool.query(`
-        SELECT d.*, STRING_AGG(t.name, ', ') AS tags
-        FROM destinations d 
-        LEFT JOIN destination_tags dt ON d.id = dt.destination_id
-        LEFT JOIN  tags t ON dt.tag_id = t.id
-        GROUP BY d.id;`
+      const result = await pool.query(
+        `
+       SELECT d.*, 
+       STRING_AGG(t.name, ', ') AS tags, 
+       COALESCE(uv.visited, false) AS visited
+       FROM destinations d
+       LEFT JOIN destination_tags dt ON d.id = dt.destination_id
+       LEFT JOIN tags t ON dt.tag_id = t.id
+      LEFT JOIN user_visited uv ON d.id = uv.destination_id
+      GROUP BY d.id, uv.visited;
+    
+
+        `
+        
       );
 
 
@@ -89,7 +95,7 @@ import { convertToObject } from 'typescript';
         flighttype: row.flight_type, // Map 'flight_type'
         climate: row.climate, // Map 'climate'
         tag : row.tags || 'general',
-        visited: row.visited, // Map 'visited'
+        visited: row.visited ?? false, // Map 'visited'
       }));
       console.log('Mapped Locations:', locations); // Debugging
 
@@ -129,8 +135,11 @@ import { convertToObject } from 'typescript';
 
   async function storetags(destinationId: string, tags: string): Promise<string | undefined> {
     try {
+      
       //insert tag and get result 
       const tagResult = await pool.query(`INSERT INTO tags (name) VALUES($1) ON CONFLICT (name) DO NOTHING RETURNING id`, [tags]);
+
+      console.log(tagResult)
 
       const tagId = tagResult.rows[0]?.id || (
         await pool.query(`SELECT id FROM tags WHERE name = $1`, [tags])
@@ -149,39 +158,77 @@ import { convertToObject } from 'typescript';
     }
   }
 
+// store boolean " visited location  users " 
+
+async  function storeVisitedUsers (destinationId: string, userId : string, visited: Boolean ): Promise <string >{
+
+  // insert and link destination with  valaue , 
+
+  try { 
+    console.log('Inserting into user_visited:', { userId, destinationId, visited: true });
+
+     await pool.query(
+      
+      `
+      INSERT INTO user_visited (user_id, destination_id, visited)
+      VALUES($1, $2, $3)
+      ON CONFLICT (user_id, destination_id)
+      DO UPDATE SET visited = $3;
+      `,
+      [userId, destinationId, visited ]
+
+    )
+
+    return `User ${userId} successfully marked as visited for destination ${destinationId}`;
+
+
+  }catch(error){
+    console.log("ERROR TRYING TO INSERT VISITED USER LOC", error );
+    throw new Error ("Failed to store visited user ");
+
+  }
+
+
+}
+
+
 
 
   //FUNCTION TO INSERT DATA IN OUR DB 
   //sql-injection Unchecked input in database commands can alter intended queries
 
-  async function storeDt({ id, name, imgurl, flighttype,climate, tag, visited }: UnsplashData): Promise<UnsplashData | null> {
-
+  async function storeDt({ id, name, imgurl, flighttype, climate, tag, visited }: UnsplashData): Promise<UnsplashData | null> {
     try {
-      console.log('Storing data in the database:', { id, name, imgurl, flighttype, climate, tag, visited });
-
-    const query = `INSERT INTO destinations (id, name, imgurl, flight_type, climate, visited)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      ON CONFLICT(id) DO NOTHING
-      RETURNING *`;
-    const values = [id, name, imgurl, flighttype, climate, visited];
+      const query = `
+        INSERT INTO destinations (id, name, imgurl, flight_type, climate)
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT(id) DO NOTHING
+        RETURNING *
+      `;
+  
+      const values = [id, name, imgurl, flighttype, climate];
       const result = await pool.query(query, values);
-
-      if(result.rows[0]){
-        await storetags(id, tag)
+  
+      console.log("Insert result:", result);
+  
+      if (result && result.rows && result.rows.length > 0) {
+        await storetags(id, tag);
+        // temperary givng storeVisited a dummy user, before dynamically giving it a real time user id . 
+        await storeVisitedUsers(id, "1", false );
+        return result.rows[0];
+      } else {
+        console.warn(`No rows returned for destination ${id}`);
+        return null;
       }
-      return result.rows[0];
     } catch (error) {
-      console.error('Failed to store data in DB', error);
+      console.error("Failed to store data in DB", error);
       return null;
     }
   }
+  
 
   // function to determine flight type 
 
-  function determineFlightType(userLocation: { lat: number; lon: number }, destinationLocation: { lat: number; lon: number }): string {
-    const distance = calculateDistance(userLocation, destinationLocation); // Use Haversine formula
-    return distance < 1500 ? 'short' : 'long';
-  }
   
   function calculateDistance(loc1: { lat: number; lon: number }, loc2: { lat: number; lon: number }): number {
     const R = 6371; // Radius of the Earth in km
@@ -215,13 +262,12 @@ import { convertToObject } from 'typescript';
 
   async  function assignTags (locationName: string): Promise<string>{
     // save tag data 
-    if(locationName.toLowerCase().includes('mountain') ||locationName.toLowerCase().includes('mountainreturn' )) return "resort"; 
-    if(locationName.toLocaleLowerCase().includes('temple')) return  "spiritual";
-    if(locationName.toLocaleLowerCase().includes('museum')) return  "Historical";
+    if(locationName.toLowerCase().includes('mountain') ||locationName.toLowerCase().includes('wave') || locationName.toLocaleLowerCase().includes('waterfall')) return "adventures"; 
+    if(locationName.toLocaleLowerCase().includes('gate')) return  "spirituality";
+    if(locationName.toLocaleLowerCase().includes('seashore')) return  "beach";
     if(locationName.toLowerCase().includes('sunset') ||locationName.toLowerCase().includes('daytime' )) return "natural"; 
-
     if(locationName.toLowerCase().includes('white') ||locationName.toLowerCase().includes('castle' )) return "solitude"; 
-    
+    if(locationName.toLowerCase().includes('building') ||locationName.toLowerCase().includes('airplane' )) return "city"; 
       return 'general'
     
   }
@@ -256,6 +302,8 @@ import { convertToObject } from 'typescript';
             flighttype: 'null',
             climate,
             tag : tags,
+            visited: false,
+
           }
 
           
