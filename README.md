@@ -1,4 +1,4 @@
-# 🌍 Destination App
+#  🌍 Travel Now Destination App
 
 Welcome to the **Destination App**, built with **Nuxt 3**! 🚀
 
